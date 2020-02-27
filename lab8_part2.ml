@@ -6,7 +6,7 @@
 
 (* Objective:
 
-This lab practices concepts of functors.
+This lab practices concepts of functors!
  *)
 
 (*======================================================================
