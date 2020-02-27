@@ -125,7 +125,7 @@ module MakeStack (Element: SERIALIZE) : (STACK with type element = Element.t) =
       match s with
       | [] -> ""
       | [a] -> Element.serialize a
-      |  _ -> (Element.serialize (top s)) ^ ":" ^ serialize (pop s)
+      |  _ ->  serialize (pop s) ^ ":" ^ (Element.serialize (top s))
   end ;;
 
 
