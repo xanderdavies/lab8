@@ -301,8 +301,50 @@ ORDERED_TYPE module for the endpoints of the intervals, and return a
 module satisfying INTERVAL *with appropriate sharing constraints
 to allow the creation of generic interval modules*.
 
-
 ......................................................................*)
+
+module MakeSafeInterval (Endpoint : ORDERED_TYPE) : INTERVAL with type endpoint = Endpoint.t =
+  struct
+    type endpoint = Endpoint.t
+
+    type interval =
+      | Interval of endpoint * endpoint
+      | Empty
+
+    (* create low high -- Returns a new interval covering `low` to
+       `high` inclusive. If `low` is greater than `high`, then the
+       interval is empty. *)
+    let create (low : endpoint) (high : endpoint) : interval =
+      if compare low high < 0 then Interval (low, high)
+      else Empty
+
+    (* is_empty intvl -- Returns true if and only if `intvl` is
+       empty *)
+    let is_empty (intvl : interval) : bool =
+      match intvl with
+      | Empty -> true
+      | _ -> false
+
+    (* contains intvl x -- Returns true if and only if the value `x`
+       is contained within `intvl` *)
+    let contains (intvl : interval) (x : endpoint) : bool =
+      match intvl with
+      | Empty -> false
+      | Interval (low, high) -> if compare low x < 0 && compare high x > 0
+                                  then true
+                                else false
+
+    (* intersect intvl1 intvl2 -- Returns the intersection of `intvl1`
+       and `intvl2` *)
+    let intersect (intvl1 : interval) (intvl2 : interval) : interval =
+      match intvl1, intvl2 with
+      | Empty, _
+      | _, Empty -> Empty
+      | Interval (l1,h1), Interval (l2,h2)->
+          if compare l1 h2 > 0 || compare h1 l2 < 0 then Empty
+          else Interval ((if compare l1 l2 < 0 then l2 else l1),
+                         (if compare h1 h2 < 0 then h1 else h2))(* ... complete the module implementation here ... *)
+  end ;;
 
 (* ... place your implementation of the MakeBestInterval functor here ... *)
 
