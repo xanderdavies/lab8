@@ -303,7 +303,7 @@ to allow the creation of generic interval modules*.
 
 ......................................................................*)
 
-module MakeSafeInterval (Endpoint : ORDERED_TYPE) : INTERVAL with type endpoint = Endpoint.t =
+module MakeBestInterval (Endpoint : ORDERED_TYPE) : INTERVAL with type endpoint = Endpoint.t =
   struct
     type endpoint = Endpoint.t
 
@@ -368,4 +368,10 @@ instead?
     IntBestInterval.is_empty (IntBestInterval.Interval (4, 3)) ;;
 ......................................................................*)
 
-module IntBestInterval = struct end ;;
+module IntBestInterval = MakeBestInterval (
+  struct
+    type t = int
+    let compare = Stdlib.compare
+  end
+)
+;;
