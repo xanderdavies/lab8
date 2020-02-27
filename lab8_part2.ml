@@ -126,6 +126,8 @@ module MakeStack (Element: SERIALIZE) : (STACK with type element = Element.t) =
       | [] -> ""
       | [a] -> Element.serialize a
       |  _ ->  serialize (pop s) ^ ":" ^ (Element.serialize (top s))
+
+    let hello = "world"
   end ;;
 
 
