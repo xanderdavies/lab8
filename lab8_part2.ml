@@ -126,8 +126,6 @@ module MakeStack (Element: SERIALIZE) : (STACK with type element = Element.t) =
       | [] -> ""
       | [a] -> Element.serialize a
       |  _ ->  serialize (pop s) ^ ":" ^ (Element.serialize (top s))
-
-    let hello = "world"
   end ;;
 
 
@@ -153,16 +151,16 @@ where N is the int, and S is the string. For instance, a stack with
 two elements might be serialized as the string
 
     "(1, 'pushed first'):(2, 'pushed second')"
-    "(52, 'hello'):(31, 'world')"    .
+    "(1, 'pushed first'):(2, 'pushed second')"    .
 
 For this oversimplified serialization function, you may assume that
-the string will be made up of alphanumeric characters only.....
+the string will be made up of alphanumeric characters only.
 ......................................................................*)
 
 module IntStringStack = MakeStack (
   struct
     type t = int * string
     let serialize ((a , b) : t) =
-       "(" ^ string_of_int a ^ ", " ^ b ^ ")"
+       "(" ^ string_of_int a ^ ",'" ^ b ^ "'" ^ ")"
   end) ;;
 
